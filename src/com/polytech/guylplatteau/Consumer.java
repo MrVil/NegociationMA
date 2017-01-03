@@ -8,14 +8,41 @@ public class Consumer extends Negociator {
     private String departure, destination;
     private double maximalPrice;
     private Date latestDate;
+    private List<Company> companies;
 
-    public Consumer(List<String> compagniesAccepted, List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate) {
+    public Consumer(List<String> compagniesAccepted, List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
         this.compagniesAccepted = compagniesAccepted;
         this.companiesRefused = companiesRefused;
         this.departure = departure;
         this.destination = destination;
         this.maximalPrice = maximalPrice;
         this.latestDate = latestDate;
+        this.companies = companies;
+    }
+
+    public Consumer(List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
+        this.companiesRefused = companiesRefused;
+        this.departure = departure;
+        this.destination = destination;
+        this.maximalPrice = maximalPrice;
+        this.latestDate = latestDate;
+        this.companies = companies;
+    }
+
+    public Consumer(String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
+        this.departure = departure;
+        this.destination = destination;
+        this.maximalPrice = maximalPrice;
+        this.latestDate = latestDate;
+        this.companies = companies;
+    }
+
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
     }
 
     public List<String> getCompagniesAccepted() {
@@ -68,6 +95,31 @@ public class Consumer extends Negociator {
 
     @Override
     void negociate() {
+
+    }
+
+    @Override
+    public void onPropose(Message message) {
+
+    }
+
+    @Override
+    public void onAcceptance(Message message) {
+
+    }
+
+    @Override
+    public void onCallForBids(Message message) {
+
+    }
+
+    @Override
+    public void onCounterPropose(Message message) {
+
+    }
+
+    @Override
+    public void onRefuse(Message message) {
 
     }
 }

@@ -43,6 +43,30 @@ public class Company extends Negociator {
 
     @Override
     void negociate() {
+    }
+
+    @Override
+    public void onPropose(Message message) {
+
+    }
+
+    @Override
+    public void onAcceptance(Message message) {
+
+    }
+
+    @Override
+    public void onCallForBids(Message message) {
+
+    }
+
+    @Override
+    public void onCounterPropose(Message message) {
+
+    }
+
+    @Override
+    public void onRefuse(Message message) {
 
     }
 }

@@ -1,7 +1,8 @@
 package com.polytech.guylplatteau
 
-class Message (val performatif: Performatif, val emmiter: Negociator, val previous: Message, val price: Int){
+import java.util.*
 
+class Message (val performatif: Performatif, val emmiter: Negociator, val previous: Message, val price: Int){
 
     override fun toString(): String {
         return "$performatif:$emmiter:${previous.hashCode()}:$price"
