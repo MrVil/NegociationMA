@@ -2,17 +2,16 @@ package com.polytech.guylplatteau;
 
 import java.util.Date;
 
-/**
- * Created by vilgh on 03/01/2017.
- */
 public class Service {
 
-    private String company;
+    private String company, departure, destination;
     private double price;
     private Date date;
 
-    public Service(String company, double price, Date date) {
+    public Service(String company, String departure, String destination, double price, Date date) {
         this.company = company;
+        this.departure = departure;
+        this.destination = destination;
         this.price = price;
         this.date = date;
     }
@@ -39,5 +38,21 @@ public class Service {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDeparture() {
+        return departure;
+    }
+
+    public void setDeparture(String departure) {
+        this.departure = departure;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }
