@@ -9,6 +9,7 @@ public class Consumer extends Negociator {
     private double maximalPrice;
     private Date latestDate;
     private List<Company> companies;
+    private Strategy strategy;
 
     public Consumer(List<String> compagniesAccepted, List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
         this.compagniesAccepted = compagniesAccepted;
@@ -96,18 +97,21 @@ public class Consumer extends Negociator {
     @Override
     void negociate() {
         for (Company company : companies){
-            //company.receiveMessage(new Message());
+            company.receiveMessage(new Message(Performatif.CallForBids, this, company, null, 0));
         }
     }
 
     @Override
     public void onPropose(Message message) {
-
+        if(message.getPrice() < maximalPrice)
+            message.getEmmiter().receiveMessage(new Message(Performatif.Acceptance, this, message.getEmmiter(), message, message.getPrice()));
+        else
+            message.getEmmiter().receiveMessage(new Message(Performatif.CounterPropose, this, message.getEmmiter(), message, strategy.getSuggestion(message.getPrice(), maximalPrice)));
     }
 
     @Override
     public void onAcceptance(Message message) {
-
+        System.out.println("Consumer received : Accept");
     }
 
     @Override
@@ -117,11 +121,11 @@ public class Consumer extends Negociator {
 
     @Override
     public void onCounterPropose(Message message) {
-
+        onPropose(message);
     }
 
     @Override
     public void onRefuse(Message message) {
-
+        System.out.println("Consumer received : Refused");
     }
 }

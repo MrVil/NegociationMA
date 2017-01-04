@@ -57,7 +57,7 @@ public class Company extends Negociator {
 
     @Override
     public void onCallForBids(Message message) {
-
+        message.getEmmiter().receiveMessage(Performatif.Propose, this, message.getEmmiter(), message, services.get(0).getPrice());
     }
 
     @Override

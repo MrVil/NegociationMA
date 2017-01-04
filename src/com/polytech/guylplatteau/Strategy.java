@@ -5,4 +5,10 @@ package com.polytech.guylplatteau;
  */
 public class Strategy {
 
+    private double price;
+
+    double getSuggestion(double proposal, double myPrice){
+        return (proposal + myPrice)/2;
+    }
+
 }
