@@ -96,7 +96,7 @@ public class Consumer extends Negociator {
     @Override
     void negociate() {
         for (Company company : companies){
-            company.receiveMessage();
+            //company.receiveMessage(new Message());
         }
     }
 
