@@ -4,14 +4,15 @@ import java.util.Date;
 import java.util.List;
 
 public class Consumer extends Negociator {
-    private List<String> compagniesAccepted, companiesRefused;
+    private List<Company> compagniesAccepted, companiesRefused, companies;
     private String departure, destination;
     private double maximalPrice;
     private Date latestDate;
-    private List<Company> companies;
-    private Strategy strategy;
+    private Strategy strategy = new Strategy();
+    private Boolean finished = false;
 
-    public Consumer(List<String> compagniesAccepted, List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
+
+    public Consumer(List<Company> compagniesAccepted, List<Company> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
         this.compagniesAccepted = compagniesAccepted;
         this.companiesRefused = companiesRefused;
         this.departure = departure;
@@ -21,7 +22,7 @@ public class Consumer extends Negociator {
         this.companies = companies;
     }
 
-    public Consumer(List<String> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
+    public Consumer(List<Company> companiesRefused, String departure, String destination, double maximalPrice, Date latestDate, List<Company> companies) {
         this.companiesRefused = companiesRefused;
         this.departure = departure;
         this.destination = destination;
@@ -36,30 +37,6 @@ public class Consumer extends Negociator {
         this.maximalPrice = maximalPrice;
         this.latestDate = latestDate;
         this.companies = companies;
-    }
-
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(List<Company> companies) {
-        this.companies = companies;
-    }
-
-    public List<String> getCompagniesAccepted() {
-        return compagniesAccepted;
-    }
-
-    public void setCompagniesAccepted(List<String> compagniesAccepted) {
-        this.compagniesAccepted = compagniesAccepted;
-    }
-
-    public List<String> getCompaniesRefused() {
-        return companiesRefused;
-    }
-
-    public void setCompaniesRefused(List<String> companiesRefused) {
-        this.companiesRefused = companiesRefused;
     }
 
     public String getDeparture() {
@@ -95,18 +72,37 @@ public class Consumer extends Negociator {
     }
 
     @Override
+    public void run() {
+        negociate();
+        while (this.finished);
+    }
+
+    @Override
     void negociate() {
         for (Company company : companies){
-            company.receiveMessage(new Message(Performatif.CallForBids, this, company, null, 0));
+            System.out.println("Send a call for bids to " + company.toString());
+            company.receiveMessage(new Message(Performatif.CallForBids, this, company, null, 0d));
         }
     }
 
     @Override
     public void onPropose(Message message) {
         if(message.getPrice() < maximalPrice)
+        {
+            System.out.println("The offer is accepted ! Congratulation !");
             message.getEmmiter().receiveMessage(new Message(Performatif.Acceptance, this, message.getEmmiter(), message, message.getPrice()));
-        else
-            message.getEmmiter().receiveMessage(new Message(Performatif.CounterPropose, this, message.getEmmiter(), message, strategy.getSuggestion(message.getPrice(), maximalPrice)));
+        }
+        else if ((message.getPrice()*0.5) > getMaximalPrice())
+        {
+            System.out.println("Sorry, the offer is too much higher than we're looking for ! (" + message.getPrice() + " for " + getMaximalPrice() + ")");
+            message.getEmmiter().receiveMessage(new Message(Performatif.Refuse, this, message.getEmmiter(), message, null));
+
+        }
+        else {
+            Message m = new Message(Performatif.CounterPropose, this, message.getEmmiter(), message, strategy.getSuggestion(message.getPrice(), maximalPrice));
+            System.out.println("Negociation, we propose " + m.getPrice() + " Million dollars");
+            message.getEmmiter().receiveMessage(m);
+        }
     }
 
     @Override
@@ -116,7 +112,7 @@ public class Consumer extends Negociator {
 
     @Override
     public void onCallForBids(Message message) {
-
+        System.err.println("Oups ! Consumer received a call for birds !");
     }
 
     @Override

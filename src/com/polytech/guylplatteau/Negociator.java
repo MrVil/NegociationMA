@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by vilgh on 03/01/2017.
  */
-public abstract class Negociator {
+public abstract class Negociator extends Thread {
 
     private Strategy strategy;
     private List<Message> messages = new ArrayList();

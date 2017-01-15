@@ -4,24 +4,15 @@ import java.util.Date;
 
 public class Service {
 
-    private String company, departure, destination;
+    private String departure, destination;
     private double price;
     private Date date;
 
-    public Service(String company, String departure, String destination, double price, Date date) {
-        this.company = company;
+    public Service(String departure, String destination, double price, Date date) {
         this.departure = departure;
         this.destination = destination;
         this.price = price;
         this.date = date;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public double getPrice() {

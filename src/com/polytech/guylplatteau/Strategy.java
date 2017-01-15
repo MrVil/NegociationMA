@@ -8,7 +8,7 @@ public class Strategy {
     private double price;
 
     double getSuggestion(double proposal, double myPrice){
-        return (proposal + myPrice)/2;
+        return myPrice - 0.1*(proposal - myPrice);
     }
 
 }
